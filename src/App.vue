@@ -5,8 +5,7 @@
             <h1> SocketChat</h1>
             <img src="./assets/logo.png" alt="logo" >
           </div>
-          <p> Real-time Chat Application</p>
-          
+          <p> Real-time Chat Application</p>      
         </header>
 
         <Chat></Chat>
