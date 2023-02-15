@@ -27,8 +27,8 @@
 
       <div class="chat-input">
           <form @submit.prevent="handleMessageSubmit(username,text)">
-          <input type="text" v-model="text" placeholder="Enter your message" />
-          <button type="submit">Send</button>
+          <input type="text" v-model="text" placeholder="Write message..." />
+          <button type="submit"><i class="bi bi-send "></i> </button>
           </form>
       </div>
     </div>
@@ -46,6 +46,7 @@
       const connect = ref(false)
       const text = ref('')
       const messages = ref([])
+      // The use of the WebSocket API 
       const socket = new WebSocket('ws://localhost:3000')
 
 
@@ -142,7 +143,6 @@
     width: 100%;
 }
 .chat-input input[type="text"] {
-  flex: 1;
     padding: 15px;
     border: none;
     border-radius: 5px 0px 0px 5px;
@@ -154,9 +154,13 @@
     border: none;
     border-radius: 0px 5px 5px 0px;
 }
+.message-container{
+    display: inline-block;
+    padding: 0 0 0 10px;
+    vertical-align: top;
+}
 
 .right-bubble{
-  text-align: right;
     background-color: #3d2aac;
     border-radius: 10px 10px 0px 10px;
     padding: 10px 15px;
@@ -165,6 +169,7 @@
     margin: 10px;
     float: right;
     color: white;
+    width:50%;
 }
   
 .left-bubble{
@@ -177,5 +182,6 @@
     margin: 10px;
     float: left;
     color: black;
+    width: 50%;
 }
   </style>

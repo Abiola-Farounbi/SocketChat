@@ -1,8 +1,12 @@
 <template>
   <div>
         <header> 
-          <h1> SocketChat</h1>
+          <div>
+            <h1> SocketChat</h1>
+            <img src="./assets/logo.png" alt="logo" >
+          </div>
           <p> Real-time Chat Application</p>
+          
         </header>
 
         <Chat></Chat>
@@ -40,5 +44,14 @@ header {
     border-radius: 20px 20px 0px 0px;
     height: 100px;
     padding: 20px;
+}
+header div {
+    display: flex;
+    }
+header div img {
+    width: 50px;
+    height: 50px;
+    margin: 0px 20px;
+    border-radius: 50%;
 }
 </style>
