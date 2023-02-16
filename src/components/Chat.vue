@@ -1,4 +1,3 @@
-
 <template>
   <div class="chat-container">
 
@@ -19,7 +18,9 @@
     <div v-if="connect" class="chat-window">
       <div class="messages-container">
         <!-- <ul> -->
+          <!-- Use a v-for directive to iterate over the messages array and display each message -->
           <div v-for="(val, index) in messages" :key="index" :class="[val.username === username ? 'left-bubble' : 'right-bubble']">
+              <!-- Use mustache syntax to interpolate the username and message properties of each message object -->
               <b>{{ val.username }}</b>: <em>{{ val.message }}</em>
           </div>
         <!-- </ul> -->
@@ -27,6 +28,7 @@
 
       <div class="chat-input">
           <form @submit.prevent="handleMessageSubmit(username,text)">
+          <!-- Use v-model directive to bind the text input to the 'text' variable -->
           <input type="text" v-model="text" placeholder="Write message..." />
           <button type="submit"><i class="bi bi-send "></i> </button>
           </form>
@@ -35,13 +37,14 @@
   </div>
 </template>
 
-  <script>
-  // import { useWebSocket } from '@vueuse/core'
+<!-- Use the 'setup' function from the Vue Composition API -->
+<script>
   import { ref,} from 'vue';
   
   export default {
     name: 'ChatComponent',
     setup() {
+      // Declare reactive variables using the 'ref' function
       const username = ref('')
       const connect = ref(false)
       const text = ref('')
@@ -49,26 +52,30 @@
       // The use of the WebSocket API 
       const socket = new WebSocket('ws://localhost:3000')
 
-
+      // Define event handlers
       const handleSubmit = () => {
         if(username.value.length > 0) {
           connect.value = true
         }
       }
 
-    const handleMessageSubmit = (username,text) => {
-      const messageData = { username: username, message: text};
-      socket.send(JSON.stringify(messageData))
-      messages.value.push(messageData)
-      text = ""
-    }
+      const handleMessageSubmit = (username,text) => {
+        const messageData = { username: username, message: text};
+        // Send the message data to the server using WebSockets
+        socket.send(JSON.stringify(messageData))
+        // Add the message data to the messages array
+        messages.value.push(messageData)
+        // Clear the text input
+        text = ""
+      }
   
-    socket.onmessage = (event) => {
-      const message = JSON.parse(event.data);
-      messages.value.push(message);
-  }
-
+      // Define a WebSocket 'onmessage' event handler to receive messages from the server
+      socket.onmessage = (event) => {
+        const message = JSON.parse(event.data);
+        messages.value.push(message);
+      }
   
+      // Return the reactive variables and event handlers to be used in the template
       return {
         text,
         connect,
@@ -79,9 +86,9 @@
       }
     },
   }
-  </script>
+</script>
   
-  <style scoped>
+<style scoped>
  
 
  .chat-container {
