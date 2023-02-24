@@ -5,8 +5,8 @@
     <div v-if="!connect">
         <div class="modal-background">
           <div class="modal-content">
-            <form @submit.prevent="handleSubmit">
-              <h3> Enter your name to start chatting </h3>
+            <form @submit.prevent="handleConnect">
+              <h3> Enter your name to join chat </h3>
               <input type="text" v-model="username" placeholder="Enter your name" />
               <br>
               <button type="submit"> Connect </button>
@@ -27,8 +27,7 @@
       </div>
 
       <div class="chat-input">
-          <form @submit.prevent="handleMessageSubmit(username,text)">
-          <!-- Use v-model directive to bind the text input to the 'text' variable -->
+          <form @submit.prevent="sendMessage()">
           <input type="text" v-model="text" placeholder="Write message..." />
           <button type="submit"><i class="bi bi-send "></i> </button>
           </form>
@@ -39,34 +38,34 @@
 
 <!-- Use the 'setup' function from the Vue Composition API -->
 <script>
-  import { ref,} from 'vue';
+  import { ref} from 'vue';
   
   export default {
     name: 'ChatComponent',
     setup() {
       // Declare reactive variables using the 'ref' function
-      const username = ref('')
+      const username = ref(null)
       const connect = ref(false)
-      const text = ref('')
+      const text = ref(null)
       const messages = ref([])
       // The use of the WebSocket API 
       const socket = new WebSocket('ws://localhost:3000')
 
-      // Define event handlers
-      const handleSubmit = () => {
+      
+      const handleConnect = () => {
         if(username.value.length > 0) {
           connect.value = true
         }
       }
 
-      const handleMessageSubmit = (username,text) => {
-        const messageData = { username: username, message: text};
+      const sendMessage = () => {
+        const messageData = { username: username.value, message: text.value};
         // Send the message data to the server using WebSockets
         socket.send(JSON.stringify(messageData))
         // Add the message data to the messages array
         messages.value.push(messageData)
         // Clear the text input
-        text = ""
+        text.value = null;
       }
   
       // Define a WebSocket 'onmessage' event handler to receive messages from the server
@@ -81,8 +80,8 @@
         connect,
         username,
         messages,
-        handleSubmit,
-        handleMessageSubmit
+        handleConnect,
+        sendMessage
       }
     },
   }
@@ -169,9 +168,8 @@
 
 .right-bubble{
     background-color: #3d2aac;
-    border-radius: 10px 10px 0px 10px;
+    border-radius: 10px 10px 10px 0px;
     padding: 10px 15px;
-    display: inline-block;
     word-wrap: break-word;
     margin: 10px;
     float: right;
@@ -182,13 +180,12 @@
 .left-bubble{
   text-align: left;
     background-color:#9b59b6;
-    border-radius: 10px 10px 10px 0px;
+    border-radius: 10px 10px 0px 10px;
     padding: 10px 15px;
     word-wrap: break-word;
-    display: inline-block;
     margin: 10px;
     float: left;
-    color: black;
+    color: white;
     width: 50%;
 }
   </style>
